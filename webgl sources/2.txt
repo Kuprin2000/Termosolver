@@ -1,0 +1,10 @@
+	// create frame drawer
+	frame_drawer = new FrameDrawer(show_nodes_checkbox, coord, color, indices, canvas_size, gl);
+
+	// set events handlers
+	document.onkeydown = function (key_event) { frame_drawer.keyDown(key_event) };
+	document.onkeyup = function (key_event) { frame_drawer.keyUp(key_event) };
+	// canvas.onmousedown = function (mouse_event) { frame_drawer.mouseDown(mouse_event) };
+	// canvas.onmouseup = function (mouse_event) { frame_drawer.mouseUp(mouse_event) };
+	// canvas.onmousemove = function (mouse_event) { frame_drawer.mouseMoved(mouse_event) };
+}
