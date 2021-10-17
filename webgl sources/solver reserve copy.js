@@ -50,10 +50,8 @@ class FrameDrawer {
 		this.center_of_the_scene = [0, 0, 0];
 		this.top_direction = [0, 0, 1];
 		mat4.lookAt(this.look_matrix, this.camera_position, this.center_of_the_scene, this.top_direction);
-
-		// initialize perspectice matrix
 		this.perspective_matrix = mat4.create();
-		mat4.perspective(this.perspective_matrix, Math.PI * 0.3, 1.0, 0.2, 5.0);
+		mat4.perspective(this.perspective_matrix, Math.PI * 0.3, 1.0, 0.2, 6.0);
 
 		// initialize buttons flags
 		this.left_arrow_pressed = false;
@@ -127,11 +125,10 @@ class FrameDrawer {
 	// draw frame
 	drawFrame() {
 		// move camera
-		if (this.down_arrow_pressed)
+		if (this.down_arrow_pressed && this.camera_position[2] >= -2)
 			this.camera_position[2] -= 1.5 / frame_time;
-		if (this.up_arrow_pressed)
+		if (this.up_arrow_pressed && this.camera_position[2] <= 2)
 			this.camera_position[2] += 1.5 / frame_time;
-
 		if (this.left_arrow_pressed)
 			vec3.transformMat3(this.camera_position, this.camera_position, this.camera_rotation_left);
 		if (this.right_arrow_pressed)
