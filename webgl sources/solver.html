@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Termo solver</title>
+    <link rel="stylesheet" href="./webgl sources/style.css">
+</head>
+
+<body onload="main()" oncontextmenu="return false;">
+    <div class="canvas">
+        <canvas id="webgl" width="800" height="800">
+            Update your browser to support "canvas"
+        </canvas>
+    </div>
+    <div class="parameters">
+        <fieldset>
+            <legend>Settings</legend>
+            <div>
+                <label for="show_nodes_checkbox"> Show only nodes:</label>
+                <input type="checkbox" id="show_nodes_checkbox" unchecked>
+            </div>
+        </fieldset>
+        </fieldset>
+    </div>
+    <div class="instruction">
+        <label for="use_arrows_label">use arrows to move camera</label>
+    </div>
+    <script src="./lib/webgl/webgl-utils.js"></script>
+    <script src="./lib/webgl/webgl-debug.js"></script>
+    <script src="./lib/webgl/cuon-utils.js"></script>
+    <script src="./lib/webgl/gl-matrix-min.js"></script>
+    <script src="./webgl sources/solver.js"></script>
+</body>
+
+</html>

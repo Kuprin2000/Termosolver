@@ -4,13 +4,13 @@
 
 class Surface {
 private:
-	int m_id;
+	unsigned int m_id;
 	Condition* m_condition;
 
 public:
 	Surface();
-	Surface(int id, Condition* condition);
-	int getId() const;
+	Surface(unsigned int id, Condition* condition);
+	unsigned int getId() const;
 	Condition* getCondition() const;
 	void deleteCondition();
 };

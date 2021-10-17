@@ -13,7 +13,7 @@ void FiniteElement::initCenter(const vector<array<double, COORDS_PER_NODE>>* coo
 	double z_accumulator = 0;
 	const array<double, COORDS_PER_NODE>* current_node;
 
-	for (int i = 0; i < NODES_PER_ELEMENT; ++i) {
+	for (unsigned int i = 0; i < NODES_PER_ELEMENT; ++i) {
 		current_node = &(coord_array->at(m_nodes_id.at(i)));
 		x_accumulator += current_node->at(0);
 		y_accumulator += current_node->at(1);
@@ -31,9 +31,9 @@ void FiniteElement::initVolume(const vector<array<double, COORDS_PER_NODE>>* coo
 	const array<double, COORDS_PER_NODE>* current_node;
 
 	basic_node = &(coord_array->at(m_nodes_id.at(3)));
-	for (int j = 0; j < 3; ++j) {
+	for (unsigned int j = 0; j < 3; ++j) {
 		current_node = &(coord_array->at(m_nodes_id.at(j)));
-		for (int i = 0; i < COORDS_PER_NODE; ++i)
+		for (unsigned int i = 0; i < COORDS_PER_NODE; ++i)
 			matrix[i][j] = current_node->at(i) - basic_node->at(i);
 	}
 
@@ -48,16 +48,16 @@ void FiniteElement::initShapeFunctions(const vector<array<double, COORDS_PER_NOD
 	double z_coord[NODES_PER_ELEMENT];
 	double delta, delta_1, delta_2, delta_3, delta_4;
 	double one = 1.;
-	int j, k, l, current_index;
+	unsigned int  j, k, l, current_index;
 
-	for (int i = 0; i < NODES_PER_ELEMENT; ++i) {
+	for (unsigned int i = 0; i < NODES_PER_ELEMENT; ++i) {
 		current_index = m_nodes_id[i];
 		x_coord[i] = coord_array->at(current_index).at(0);
 		y_coord[i] = coord_array->at(current_index).at(1);
 		z_coord[i] = coord_array->at(current_index).at(2);
 	}
 
-	for (int i = 0; i < NODES_PER_ELEMENT; ++i) {
+	for (unsigned int i = 0; i < NODES_PER_ELEMENT; ++i) {
 		j = (i + 1) % NODES_PER_ELEMENT;
 		k = (i + 2) % NODES_PER_ELEMENT;
 		l = (i + 3) % NODES_PER_ELEMENT;
@@ -135,11 +135,11 @@ void FiniteElement::initShapeFunctions(const vector<array<double, COORDS_PER_NOD
 	}
 }
 
-FiniteElement::FiniteElement(int id, const array<int, NODES_PER_ELEMENT>* nodes_id,
+FiniteElement::FiniteElement(unsigned int  id, const array<unsigned int, NODES_PER_ELEMENT>* nodes_id,
 	const vector<array<double, COORDS_PER_NODE>>* coord_array) :
 	m_id(id) {
 
-	for (int i = 0; i < NODES_PER_ELEMENT; ++i)
+	for (unsigned int i = 0; i < NODES_PER_ELEMENT; ++i)
 		m_nodes_id.at(i) = nodes_id->at(i);
 
 	initCenter(coord_array);
@@ -147,11 +147,11 @@ FiniteElement::FiniteElement(int id, const array<int, NODES_PER_ELEMENT>* nodes_
 	initShapeFunctions(coord_array);
 }
 
-int FiniteElement::getID() const {
+unsigned int  FiniteElement::getID() const {
 	return m_id;
 }
 
-const array<int, NODES_PER_ELEMENT>* FiniteElement::getNodesId() const {
+const array<unsigned int, NODES_PER_ELEMENT>* FiniteElement::getNodesId() const {
 	return &m_nodes_id;
 }
 

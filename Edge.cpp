@@ -1,10 +1,10 @@
 #include "Edge.h"
 
-Edge::Edge() : 
-	m_surface_id(-1), m_square(-1), m_center({ 0,0,0 }), m_point_a({ 0,0,0 }), m_point_b({ 0,0,0 }), m_point_c({ 0,0,0 }), m_right_order_of_ids({0,0,0}) {
+Edge::Edge() :
+	m_surface_id(-1), m_square(-1), m_center({ 0,0,0 }), m_point_a({ 0,0,0 }), m_point_b({ 0,0,0 }), m_point_c({ 0,0,0 }), m_right_order_of_ids({ 0,0,0 }) {
 }
 
-Edge::Edge(int surface_id, const array<int, NODES_PER_EDGE>* indices, const vector<array<double, COORDS_PER_NODE>>* coords) :
+Edge::Edge(unsigned int  surface_id, const array<unsigned int, NODES_PER_EDGE>* indices, const vector<array<double, COORDS_PER_NODE>>* coords) :
 	m_surface_id(surface_id), m_right_order_of_ids(*indices) {
 
 	array<double, COORDS_PER_NODE>  coord_1, coord_2, coord_3;
@@ -22,13 +22,13 @@ Edge::Edge(int surface_id, const array<int, NODES_PER_EDGE>* indices, const vect
 	m_center.at(1) = y_accumulator / NODES_PER_EDGE;
 	m_center.at(2) = z_accumulator / NODES_PER_EDGE;
 
-	for (int i = 0; i < COORDS_PER_NODE; ++i) {
+	for (unsigned int i = 0; i < COORDS_PER_NODE; ++i) {
 		m_point_a.at(i) = (coord_1.at(i) + coord_2.at(i)) / 2;
 		m_point_b.at(i) = (coord_2.at(i) + coord_3.at(i)) / 2;
 		m_point_c.at(i) = (coord_1.at(i) + coord_3.at(i)) / 2;
 	}
 
-	for (int i = 0; i < COORDS_PER_NODE; ++i) {
+	for (unsigned int i = 0; i < COORDS_PER_NODE; ++i) {
 		coord_2.at(i) -= coord_1.at(i);
 		coord_3.at(i) -= coord_1.at(i);
 	}
@@ -41,7 +41,7 @@ Edge::Edge(int surface_id, const array<int, NODES_PER_EDGE>* indices, const vect
 	m_square /= 2;
 }
 
-int Edge::getSurfaceId() const {
+unsigned int  Edge::getSurfaceId() const {
 	return m_surface_id;
 }
 
@@ -53,7 +53,7 @@ const array <double, 3>* Edge::getCenter() const {
 	return &m_center;
 }
 
-const array<int, NODES_PER_EDGE>* Edge::getRightIdsOrder() const {
+const array<unsigned int, NODES_PER_EDGE>* Edge::getRightIdsOrder() const {
 	return &m_right_order_of_ids;
 }
 

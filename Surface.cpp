@@ -1,12 +1,12 @@
 #include "Surface.h"
 
-Surface::Surface() : m_id(-1), m_condition(nullptr) {
+Surface::Surface() : m_id(0), m_condition(nullptr) {
 }
 
-Surface::Surface(int id, Condition* condition) : m_id(id), m_condition(condition) {
+Surface::Surface(unsigned int id, Condition* condition) : m_id(id), m_condition(condition) {
 }
 
-int Surface::getId() const {
+unsigned int Surface::getId() const {
 	return m_id;
 }
 

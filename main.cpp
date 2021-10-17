@@ -31,6 +31,8 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
 
+	data_loader.deletUselessData();
+
 	if (!solver.solve()) {
 		_getch();
 		return -1;

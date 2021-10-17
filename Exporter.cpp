@@ -5,7 +5,7 @@ Exporter::Exporter(const DataLoader* data_loader, const Solver* solver) : m_data
 
 void Exporter::setExeFilePath(const string& file_path) {
 	m_exe_file_path = file_path;
-	int index = m_exe_file_path.find_last_of('\\');
+	unsigned int  index = m_exe_file_path.find_last_of('\\');
 	m_exe_file_path = m_exe_file_path.substr(0, index);
 
 	index = m_exe_file_path.find("\\");
@@ -16,8 +16,8 @@ void Exporter::setExeFilePath(const string& file_path) {
 }
 
 void Exporter::generateJSFile(const string& file_path) const {
-	int number_of_nodes = m_data_loader->getNodeCount();
-	int max_coord = m_data_loader->getMaxCoord();
+	unsigned int  number_of_nodes = m_data_loader->getNodeCount();
+	unsigned int  max_coord = m_data_loader->getMaxCoord();
 	double max_temperature = m_solver->getMaxTemperature();
 	double min_temperature = m_solver->getMinTemperature();
 	double temperature_delta = max_temperature - min_temperature;
@@ -26,7 +26,7 @@ void Exporter::generateJSFile(const string& file_path) const {
 	double red_coeff;
 	double blue_coeff;
 	const array<double, COORDS_PER_NODE>* current_node_coord;
-	vector <int> boundary_nodes;
+	vector <unsigned int > boundary_nodes;
 	ofstream js_file;
 	ifstream js_template_1;
 	ifstream js_template_2;
@@ -44,7 +44,7 @@ void Exporter::generateJSFile(const string& file_path) const {
 	js_file << "	let coord = new Float32Array(number_of_nodes * COORDS_PER_NODE);" << endl;
 	js_file << "	let color = new Float32Array(number_of_nodes * COLOR_COMPONENTS);" << endl << endl;
 
-	for (int i = 0; i < number_of_nodes; ++i) {
+	for (unsigned int i = 0; i < number_of_nodes; ++i) {
 		current_node_coord = m_data_loader->getNodeCoord(i);
 		current_node_temperature = m_solver->getTemperatureAtNode(i);
 		color_coeff = (current_node_temperature - min_temperature) / temperature_delta;
@@ -63,7 +63,7 @@ void Exporter::generateJSFile(const string& file_path) const {
 	boundary_nodes = m_data_loader->getBoundaryNodes();
 	js_file << "	let indices = new Uint16Array(" << boundary_nodes.size() << ");" << endl << endl;
 
-	for (int i = 0; i < boundary_nodes.size(); ++i)
+	for (unsigned int i = 0; i < boundary_nodes.size(); ++i)
 		js_file << "	indices[" << i << "] = " << boundary_nodes.at(i) << ";" << endl;
 
 	js_file << endl;
@@ -78,7 +78,7 @@ void Exporter::generateJSFile(const string& file_path) const {
 }
 
 void Exporter::genetateTxtFile(const string& file_path) const {
-	int number_of_nodes = m_data_loader->getNodeCount();
+	unsigned int  number_of_nodes = m_data_loader->getNodeCount();
 	double current_node_temperature;
 	ofstream txt_file;
 
@@ -86,7 +86,7 @@ void Exporter::genetateTxtFile(const string& file_path) const {
 
 	txt_file.open(m_exe_file_path + file_path, ios::out);
 
-	for (int i = 0; i < number_of_nodes; ++i) {
+	for (unsigned int i = 0; i < number_of_nodes; ++i) {
 		current_node_temperature = m_solver->getTemperatureAtNode(i);
 		txt_file << i << "	" << current_node_temperature;
 		txt_file << endl;

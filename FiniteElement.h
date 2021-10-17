@@ -10,8 +10,8 @@ using namespace std;
 
 class FiniteElement {
 private:
-	int m_id;
-	array<int, NODES_PER_ELEMENT> m_nodes_id;
+	unsigned int  m_id;
+	array<unsigned int, NODES_PER_ELEMENT> m_nodes_id;
 	array<double, COORDS_PER_NODE> m_center;
 	array<double, NODES_PER_ELEMENT> m_a_coeff, m_b_coeff, m_c_coeff, m_d_coeff;
 	double m_volume;
@@ -24,10 +24,10 @@ private:
 	double calcDeterminant(const double matrix[][3]) const;
 
 public:
-	FiniteElement(int id, const array<int, NODES_PER_ELEMENT>* nodes_id,
+	FiniteElement(unsigned int  id, const array<unsigned int, NODES_PER_ELEMENT>* nodes_id,
 		const vector<array<double, COORDS_PER_NODE>>* coord_array);
-	int getID() const;
-	const array<int, NODES_PER_ELEMENT>* getNodesId() const;
+	unsigned int  getID() const;
+	const array<unsigned int, NODES_PER_ELEMENT>* getNodesId() const;
 	const array<double, COORDS_PER_NODE>* getCenter() const;
 	const array<double, NODES_PER_ELEMENT>* getCoeffsA() const;
 	const array<double, NODES_PER_ELEMENT>* getCoeffsB() const;
