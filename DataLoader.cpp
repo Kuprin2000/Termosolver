@@ -13,7 +13,7 @@ void DataLoader::initCoords() {
 	array<double, COORDS_PER_NODE> current_coords;
 
 	m_file >> buffer_string;
-	number_of_nodes = atoi(buffer_string.c_str());
+	number_of_nodes = atol(buffer_string.c_str());
 
 	for (unsigned int i = 0; i < number_of_nodes; ++i) {
 		m_file >> buffer_string;
@@ -44,18 +44,18 @@ void DataLoader::initElements() {
 	array<unsigned int, NODES_PER_ELEMENT>  indices;
 
 	m_file >> buffer_string;
-	number_of_elements = atoi(buffer_string.c_str());
+	number_of_elements = atol(buffer_string.c_str());
 
 	for (unsigned int i = 0; i < number_of_elements; ++i) {
 		m_file >> buffer_string;
 		m_file >> buffer_string;
-		indices.at(0) = atoi(buffer_string.c_str()) - 1;
+		indices.at(0) = atol(buffer_string.c_str()) - 1;
 		m_file >> buffer_string;
-		indices.at(1) = atoi(buffer_string.c_str()) - 1;
+		indices.at(1) = atol(buffer_string.c_str()) - 1;
 		m_file >> buffer_string;
-		indices.at(2) = atoi(buffer_string.c_str()) - 1;
+		indices.at(2) = atol(buffer_string.c_str()) - 1;
 		m_file >> buffer_string;
-		indices.at(3) = atoi(buffer_string.c_str()) - 1;
+		indices.at(3) = atol(buffer_string.c_str()) - 1;
 
 		m_elements.push_back(FiniteElement(i, &indices, &m_coords));
 	}
@@ -72,21 +72,21 @@ void DataLoader::initEdges() {
 	m_node_examples = new map<unsigned int, array<unsigned int, NODES_PER_EDGE>>();
 
 	m_file >> buffer_string;
-	number_of_edges = atoi(buffer_string.c_str());
+	number_of_edges = atol(buffer_string.c_str());
 
 	for (unsigned int i = 0; i < number_of_edges; ++i) {
 		m_file >> buffer_string;
-		surface_id = atoi(buffer_string.c_str()) - 1;
+		surface_id = atol(buffer_string.c_str()) - 1;
 
 		if (surface_id > number_of_surfaces)
 			number_of_surfaces = surface_id;
 
 		m_file >> buffer_string;
-		indices.at(0) = atoi(buffer_string.c_str()) - 1;
+		indices.at(0) = atol(buffer_string.c_str()) - 1;
 		m_file >> buffer_string;
-		indices.at(1) = atoi(buffer_string.c_str()) - 1;
+		indices.at(1) = atol(buffer_string.c_str()) - 1;
 		m_file >> buffer_string;
-		indices.at(2) = atoi(buffer_string.c_str()) - 1;
+		indices.at(2) = atol(buffer_string.c_str()) - 1;
 
 		m_boundary_edges.push_back(Edge(surface_id, &indices, &m_coords));
 

@@ -228,23 +228,37 @@ void Solver::heatFlowCond(array<double, NODES_PER_ELEMENT>* local_vector, const 
 	const array<double, NODES_PER_ELEMENT>* coeffs_c = elem->getCoeffsC();
 	const array<double, NODES_PER_ELEMENT>* coeffs_d = elem->getCoeffsD();
 	array<double, NODES_PER_ELEMENT> center_values;
+	array<unsigned int, NODES_PER_EDGE>::const_iterator local_numeration_iter;
 
 	center_values.fill(0.);
 
-	for (unsigned int i = 0; i < NODES_PER_EDGE; ++i) {
-		current_node_local_id = local_numeration->at(i);
+	for (local_numeration_iter = local_numeration->begin(); local_numeration_iter != local_numeration->end(); local_numeration_iter++) {
+		current_node_local_id = *local_numeration_iter;
 		center_values.at(current_node_local_id) = coeffs_a->at(current_node_local_id);
 		center_values.at(current_node_local_id) += edge_center->at(0) * coeffs_b->at(current_node_local_id);
 		center_values.at(current_node_local_id) += edge_center->at(1) * coeffs_c->at(current_node_local_id);
 		center_values.at(current_node_local_id) += edge_center->at(2) * coeffs_d->at(current_node_local_id);
 	}
 
+	//for (unsigned int i = 0; i < NODES_PER_EDGE; ++i) {
+	//	current_node_local_id = local_numeration->at(i);
+	//	center_values.at(current_node_local_id) = coeffs_a->at(current_node_local_id);
+	//	center_values.at(current_node_local_id) += edge_center->at(0) * coeffs_b->at(current_node_local_id);
+	//	center_values.at(current_node_local_id) += edge_center->at(1) * coeffs_c->at(current_node_local_id);
+	//	center_values.at(current_node_local_id) += edge_center->at(2) * coeffs_d->at(current_node_local_id);
+	//}
+
 	coeff = heat_flow * edge_square;
 
-	for (unsigned int i = 0; i < NODES_PER_EDGE; ++i) {
-		current_node_local_id = local_numeration->at(i);
+	for (local_numeration_iter = local_numeration->begin(); local_numeration_iter != local_numeration->end(); local_numeration_iter++) {
+		current_node_local_id = *local_numeration_iter;
 		local_vector->at(current_node_local_id) -= center_values.at(current_node_local_id) * coeff;
 	}
+
+	//for (unsigned int i = 0; i < NODES_PER_EDGE; ++i) {
+	//	current_node_local_id = local_numeration->at(i);
+	//	local_vector->at(current_node_local_id) -= center_values.at(current_node_local_id) * coeff;
+	//}
 }
 
 void Solver::envirinmentHeatExchangeCond(array<array<double, NODES_PER_ELEMENT>, NODES_PER_ELEMENT>* local_matrix,
@@ -270,29 +284,43 @@ void Solver::envirinmentHeatExchangeCond(array<array<double, NODES_PER_ELEMENT>,
 	array<double, NODES_PER_ELEMENT> point_a_values;
 	array<double, NODES_PER_ELEMENT> point_b_values;
 	array<double, NODES_PER_ELEMENT> point_c_values;
+	array<unsigned int, NODES_PER_EDGE>::const_iterator local_numeration_iter_1, local_numeration_iter_2;
 
 	center_values.fill(0.);
 	point_a_values.fill(0.);
 	point_b_values.fill(0.);
 	point_c_values.fill(0.);
 
-	for (unsigned int i = 0; i < NODES_PER_EDGE; ++i) {
-		current_node_local_id_1 = local_numeration->at(i);
+	for (local_numeration_iter_1 = local_numeration->begin(); local_numeration_iter_1 != local_numeration->end(); ++local_numeration_iter_1) {
+		current_node_local_id_1 = *local_numeration_iter_1;
 		center_values.at(current_node_local_id_1) = coeffs_a->at(current_node_local_id_1);
 		center_values.at(current_node_local_id_1) += edge_center->at(0) * coeffs_b->at(current_node_local_id_1);
 		center_values.at(current_node_local_id_1) += edge_center->at(1) * coeffs_c->at(current_node_local_id_1);
 		center_values.at(current_node_local_id_1) += edge_center->at(2) * coeffs_d->at(current_node_local_id_1);
 	}
 
+	//for (unsigned int i = 0; i < NODES_PER_EDGE; ++i) {
+	//	current_node_local_id_1 = local_numeration->at(i);
+	//	center_values.at(current_node_local_id_1) = coeffs_a->at(current_node_local_id_1);
+	//	center_values.at(current_node_local_id_1) += edge_center->at(0) * coeffs_b->at(current_node_local_id_1);
+	//	center_values.at(current_node_local_id_1) += edge_center->at(1) * coeffs_c->at(current_node_local_id_1);
+	//	center_values.at(current_node_local_id_1) += edge_center->at(2) * coeffs_d->at(current_node_local_id_1);
+	//}
+
 	coeff = exchange_coeff * invironment_temp * edge_square;
 
-	for (unsigned int i = 0; i < NODES_PER_EDGE; ++i) {
-		current_node_local_id_1 = local_numeration->at(i);
+	for (local_numeration_iter_1 = local_numeration->begin(); local_numeration_iter_1 != local_numeration->end(); ++local_numeration_iter_1) {
+		current_node_local_id_1 = *local_numeration_iter_1;
 		local_vector->at(current_node_local_id_1) += center_values.at(current_node_local_id_1) * coeff;
 	}
 
-	for (unsigned int i = 0; i < NODES_PER_EDGE; ++i) {
-		current_node_local_id_1 = local_numeration->at(i);
+	//for (unsigned int i = 0; i < NODES_PER_EDGE; ++i) {
+	//	current_node_local_id_1 = local_numeration->at(i);
+	//	local_vector->at(current_node_local_id_1) += center_values.at(current_node_local_id_1) * coeff;
+	//}
+
+	for (local_numeration_iter_1 = local_numeration->begin(); local_numeration_iter_1 != local_numeration->end(); ++local_numeration_iter_1) {
+		current_node_local_id_1 = *local_numeration_iter_1;
 
 		point_a_values.at(current_node_local_id_1) = coeffs_a->at(current_node_local_id_1);
 		point_a_values.at(current_node_local_id_1) += coeffs_b->at(current_node_local_id_1) * point_a->at(0);
@@ -315,13 +343,37 @@ void Solver::envirinmentHeatExchangeCond(array<array<double, NODES_PER_ELEMENT>,
 		center_values.at(current_node_local_id_1) /= NODES_PER_EDGE;
 	}
 
+	//for (unsigned int i = 0; i < NODES_PER_EDGE; ++i) {
+	//	current_node_local_id_1 = local_numeration->at(i);
+
+	//	point_a_values.at(current_node_local_id_1) = coeffs_a->at(current_node_local_id_1);
+	//	point_a_values.at(current_node_local_id_1) += coeffs_b->at(current_node_local_id_1) * point_a->at(0);
+	//	point_a_values.at(current_node_local_id_1) += coeffs_c->at(current_node_local_id_1) * point_a->at(1);
+	//	point_a_values.at(current_node_local_id_1) += coeffs_d->at(current_node_local_id_1) * point_a->at(2);
+
+	//	point_b_values.at(current_node_local_id_1) = coeffs_a->at(current_node_local_id_1);
+	//	point_b_values.at(current_node_local_id_1) += coeffs_b->at(current_node_local_id_1) * point_b->at(0);
+	//	point_b_values.at(current_node_local_id_1) += coeffs_c->at(current_node_local_id_1) * point_b->at(1);
+	//	point_b_values.at(current_node_local_id_1) += coeffs_d->at(current_node_local_id_1) * point_b->at(2);
+
+	//	point_c_values.at(current_node_local_id_1) = coeffs_a->at(current_node_local_id_1);
+	//	point_c_values.at(current_node_local_id_1) += coeffs_b->at(current_node_local_id_1) * point_c->at(0);
+	//	point_c_values.at(current_node_local_id_1) += coeffs_c->at(current_node_local_id_1) * point_c->at(1);
+	//	point_c_values.at(current_node_local_id_1) += coeffs_d->at(current_node_local_id_1) * point_c->at(2);
+
+	//	center_values.at(current_node_local_id_1) = point_a_values.at(current_node_local_id_1);
+	//	center_values.at(current_node_local_id_1) += point_b_values.at(current_node_local_id_1);
+	//	center_values.at(current_node_local_id_1) += point_c_values.at(current_node_local_id_1);
+	//	center_values.at(current_node_local_id_1) /= NODES_PER_EDGE;
+	//}
+
 	coeff = edge_square * exchange_coeff;
 
-	for (unsigned int i = 0; i < NODES_PER_EDGE; ++i) {
-		current_node_local_id_1 = local_numeration->at(i);
+	for (local_numeration_iter_1 = local_numeration->begin(); local_numeration_iter_1 != local_numeration->end(); ++local_numeration_iter_1) {
+		current_node_local_id_1 = *local_numeration_iter_1;
 
-		for (unsigned int j = 0; j < NODES_PER_EDGE; ++j) {
-			current_node_local_id_2 = local_numeration->at(j);
+		for (local_numeration_iter_2 = local_numeration->begin(); local_numeration_iter_2 != local_numeration->end(); ++local_numeration_iter_2) {
+			current_node_local_id_2 = *local_numeration_iter_2;
 
 			local_matrix->at(current_node_local_id_1).at(current_node_local_id_2) +=
 				center_values.at(current_node_local_id_1) * center_values.at(current_node_local_id_2) * coeff;

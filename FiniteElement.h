@@ -25,7 +25,7 @@ private:
 
 public:
 	FiniteElement(unsigned int  id, const array<unsigned int, NODES_PER_ELEMENT>* nodes_id,
-		const vector<array<double, COORDS_PER_NODE>>* coord_array);
+				  const vector<array<double, COORDS_PER_NODE>>* coord_array);
 	unsigned int  getID() const;
 	const array<unsigned int, NODES_PER_ELEMENT>* getNodesId() const;
 	const array<double, COORDS_PER_NODE>* getCenter() const;

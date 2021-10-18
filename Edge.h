@@ -15,7 +15,7 @@ private:
 public:
 	Edge();
 	Edge(unsigned int  surface_id, const array<unsigned int, NODES_PER_EDGE>* indices,
-		const vector<array<double, COORDS_PER_NODE>>* coords);
+		 const vector<array<double, COORDS_PER_NODE>>* coords);
 	unsigned int  getSurfaceId() const;
 	double getSquare() const;
 	const array <double, COORDS_PER_NODE>* getCenter() const;

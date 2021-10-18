@@ -35,22 +35,22 @@ private:
 	void addToGlobalVector(unsigned int i, double value);
 	double getFromGlobalVector(unsigned int i) const;
 	void setupBoundaryEdges(const array<array<unsigned int, NODES_PER_EDGE>, EDGES_PER_ELEMENT>* local_numeration,
-		const array<unsigned int, NODES_PER_ELEMENT>* nodes_id,
-		array<const Edge*, NODES_PER_ELEMENT>* boundary_edges) const;
+							const array<unsigned int, NODES_PER_ELEMENT>* nodes_id,
+							array<const Edge*, NODES_PER_ELEMENT>* boundary_edges) const;
 	void initLocalMatrix(array<array<double, NODES_PER_ELEMENT>, NODES_PER_ELEMENT>* local_matrix,
-		const FiniteElement* elem, double heat_conduction_coeff) const;
+						 const FiniteElement* elem, double heat_conduction_coeff) const;
 	void initLocalVector(array<double, NODES_PER_ELEMENT>* local_vector) const;
 	void applyConstantTempCond(const map<unsigned int, double>* nodes_with_const_temp);
 	void heatFlowCond(array<double, NODES_PER_ELEMENT>* local_vector,
-		const array<unsigned int, NODES_PER_EDGE>* local_numeration,
-		const FiniteElement* elem, const Edge* edge,
-		const HeatFlowCondition* condition) const;
+					  const array<unsigned int, NODES_PER_EDGE>* local_numeration,
+					  const FiniteElement* elem, const Edge* edge,
+					  const HeatFlowCondition* condition) const;
 	void envirinmentHeatExchangeCond(array<array<double, NODES_PER_ELEMENT>, NODES_PER_ELEMENT>* local_matrix,
-		array<double, NODES_PER_ELEMENT>* local_vector,
-		const array<unsigned int, NODES_PER_EDGE>* local_numeration,
-		const FiniteElement* elem,
-		const Edge* edge,
-		const EnvironmentHeatExchangeCondition* condition) const;
+									 array<double, NODES_PER_ELEMENT>* local_vector,
+									 const array<unsigned int, NODES_PER_EDGE>* local_numeration,
+									 const FiniteElement* elem,
+									 const Edge* edge,
+									 const EnvironmentHeatExchangeCondition* condition) const;
 
 public:
 	explicit Solver(const DataLoader* data_loader);

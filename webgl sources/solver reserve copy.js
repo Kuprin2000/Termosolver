@@ -47,17 +47,20 @@ class FrameDrawer {
 		mat3.fromRotation(this.camera_rotation_left, -1 / this.time_step);
 		this.camera_rotation_right = mat3.create();
 		mat3.invert(this.camera_rotation_right, this.camera_rotation_left);
+		this.scale_factor = 1 - (0.8 / this.time_step);
 		this.center_of_the_scene = [0, 0, 0];
 		this.top_direction = [0, 0, 1];
 		mat4.lookAt(this.look_matrix, this.camera_position, this.center_of_the_scene, this.top_direction);
 		this.perspective_matrix = mat4.create();
-		mat4.perspective(this.perspective_matrix, Math.PI * 0.3, 1.0, 0.2, 6.0);
+		mat4.perspective(this.perspective_matrix, Math.PI * 0.3, 1.0, 0.1, 6.0);
 
 		// initialize buttons flags
-		this.left_arrow_pressed = false;
-		this.right_arrow_pressed = false;
-		this.up_arrow_pressed = false;
-		this.down_arrow_pressed = false;
+		this.left_button_pressed = false;
+		this.right_button_pressed = false;
+		this.up_button_pressed = false;
+		this.down_button_pressed = false;
+		this.zoom_in_button_pressed = false;
+		this.zoom_out_button_pressed = false;
 
 		// initilize extra data
 		this.canvas_size = canvas_size;
@@ -95,44 +98,60 @@ class FrameDrawer {
 
 	// process key press event
 	keyDown(key_event) {
-		if (key_event.key == "ArrowDown")
-			this.down_arrow_pressed = true;
+		if (key_event.code == "KeyS")
+			this.down_button_pressed = true;
 
-		if (key_event.key == "ArrowUp")
-			this.up_arrow_pressed = true;
+		if (key_event.code == "KeyW")
+			this.up_button_pressed = true;
 
-		if (key_event.key == "ArrowLeft")
-			this.left_arrow_pressed = true;
+		if (key_event.code == "KeyA")
+			this.left_button_pressed = true;
 
-		if (key_event.key == "ArrowRight")
-			this.right_arrow_pressed = true;
+		if (key_event.code == "KeyD")
+			this.right_button_pressed = true;
+
+		if (key_event.code == "KeyQ")
+			this.zoom_out_button_pressed = true;
+
+		if (key_event.code == "KeyE")
+			this.zoom_in_button_pressed = true;
 	}
 
 	keyUp(key_event) {
-		if (key_event.key == "ArrowDown")
-			this.down_arrow_pressed = false;
+		if (key_event.code == "KeyS")
+			this.down_button_pressed = false;
 
-		if (key_event.key == "ArrowUp")
-			this.up_arrow_pressed = false;
+		if (key_event.code == "KeyW")
+			this.up_button_pressed = false;
 
-		if (key_event.key == "ArrowLeft")
-			this.left_arrow_pressed = false;
+		if (key_event.code == "KeyA")
+			this.left_button_pressed = false;
 
-		if (key_event.key == "ArrowRight")
-			this.right_arrow_pressed = false;
+		if (key_event.code == "KeyD")
+			this.right_button_pressed = false;
+
+		if (key_event.code == "KeyQ")
+			this.zoom_out_button_pressed = false;
+
+		if (key_event.code == "KeyE")
+			this.zoom_in_button_pressed = false;
 	}
 
 	// draw frame
 	drawFrame() {
 		// move camera
-		if (this.down_arrow_pressed && this.camera_position[2] >= -2)
+		if (this.down_button_pressed && this.camera_position[2] >= -2)
 			this.camera_position[2] -= 1.5 / frame_time;
-		if (this.up_arrow_pressed && this.camera_position[2] <= 2)
+		if (this.up_button_pressed && this.camera_position[2] <= 2)
 			this.camera_position[2] += 1.5 / frame_time;
-		if (this.left_arrow_pressed)
+		if (this.left_button_pressed)
 			vec3.transformMat3(this.camera_position, this.camera_position, this.camera_rotation_left);
-		if (this.right_arrow_pressed)
+		if (this.right_button_pressed)
 			vec3.transformMat3(this.camera_position, this.camera_position, this.camera_rotation_right);
+		if (this.zoom_in_button_pressed && vec3.length(this.camera_position) > 0.2)
+			vec3.scale(this.camera_position, this.camera_position, this.scale_factor,)
+		if (this.zoom_out_button_pressed && vec3.length(this.camera_position) < 4.)
+			vec3.scale(this.camera_position, this.camera_position, 1 / this.scale_factor)
 
 		mat4.lookAt(this.look_matrix, this.camera_position, this.center_of_the_scene, this.top_direction);
 		this.gl.uniformMatrix4fv(this.look_matrix_ptr, false, mat4.multiply(mat4.create(), this.perspective_matrix, this.look_matrix));
@@ -170,6 +189,6 @@ function main() {
 	frame_drawer = new FrameDrawer(show_nodes_checkbox, coord, color, indices, canvas_size, gl);
 
 	// set events handlers
-	document.onkeydown = function (key_event) { frame_drawer.keyDown(key_event) };
-	document.onkeyup = function (key_event) { frame_drawer.keyUp(key_event) };
+	document.onkeydown = function (key_event) { frame_drawer.codeDown(key_event) };
+	document.onkeyup = function (key_event) { frame_drawer.codeUp(key_event) };
 }
