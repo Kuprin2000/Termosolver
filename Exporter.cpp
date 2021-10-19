@@ -80,11 +80,16 @@ void Exporter::generateJSFile(const string& file_path) const {
 void Exporter::genetateTxtFile(const string& file_path) const {
 	unsigned int  number_of_nodes = m_data_loader->getNodeCount();
 	double current_node_temperature;
+	double max_temperature = m_solver->getMaxTemperature();
+	double min_temperature = m_solver->getMinTemperature();
 	ofstream txt_file;
 
 	cout << "Exporting data to txt file..." << endl << endl;
 
 	txt_file.open(m_exe_file_path + file_path, ios::out);
+
+	txt_file << max_temperature << endl;
+	txt_file << min_temperature << endl;
 
 	for (unsigned int i = 0; i < number_of_nodes; ++i) {
 		current_node_temperature = m_solver->getTemperatureAtNode(i);
