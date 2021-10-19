@@ -52,7 +52,7 @@ class FrameDrawer {
 		this.top_direction = [0, 0, 1];
 		mat4.lookAt(this.look_matrix, this.camera_position, this.center_of_the_scene, this.top_direction);
 		this.perspective_matrix = mat4.create();
-		mat4.perspective(this.perspective_matrix, Math.PI * 0.3, 1.0, 0.1, 6.0);
+		mat4.perspective(this.perspective_matrix, Math.PI * 0.3, 2., 0.1, 6.0);
 
 		// initialize buttons flags
 		this.left_button_pressed = false;
