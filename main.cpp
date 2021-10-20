@@ -11,8 +11,9 @@ int main(int argc, char* argv[]) {
 	string file_path;
 
 	if (argc != 2) {
-		cout << "Unput file path" << endl;
-		cin >> file_path;
+		cout << "This is a console application. You can use it from the command line or drag file and drop it on the application icon." << endl;
+		_getch();
+		return -1;
 	}
 
 	else
@@ -31,7 +32,7 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
 
-	data_loader.deletUselessData();
+	data_loader.deleteSomeDataBeforeSolve();
 
 	if (!solver.solve()) {
 		_getch();

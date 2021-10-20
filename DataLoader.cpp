@@ -69,8 +69,6 @@ void DataLoader::initEdges() {
 	array<unsigned int, NODES_PER_EDGE>  indices;
 	pair<unsigned int, unsigned int > new_hash_table_elem;
 
-	m_node_examples = new map<unsigned int, array<unsigned int, NODES_PER_EDGE>>();
-
 	m_file >> buffer_string;
 	number_of_edges = atol(buffer_string.c_str());
 
@@ -96,8 +94,8 @@ void DataLoader::initEdges() {
 		new_hash_table_elem.second = i;
 		m_boundary_edges_hash_table.insert(new_hash_table_elem);
 
-		if (m_node_examples->count(surface_id) == 0)
-			(*m_node_examples)[surface_id] = indices;
+		if (m_node_examples.count(surface_id) == 0)
+			m_node_examples[surface_id] = indices;
 	}
 }
 
@@ -108,14 +106,14 @@ bool DataLoader::initSufaces() {
 	array<double, COORDS_PER_NODE> node_coord;
 	Condition* condition = nullptr;
 
-	number_of_surfaces = m_node_examples->size();
+	number_of_surfaces = m_node_examples.size();
 
 	m_surfaces.resize(number_of_surfaces);
 
 	for (unsigned int i = 0; i < number_of_surfaces; ++i) {
 		system("cls");
 		cout << "Input conditions at surface " << i + 1 << endl << "Three nodes that beint to this surface:" << endl << endl;
-		nodes_id = m_node_examples->at(i);
+		nodes_id = m_node_examples.at(i);
 		for (unsigned int j = 0; j < NODES_PER_EDGE; ++j) {
 			current_node_id = nodes_id.at(j);
 			node_coord = m_coords.at(current_node_id);
@@ -170,7 +168,8 @@ bool DataLoader::initSufaces() {
 	}
 
 	system("cls");
-	delete m_node_examples;
+
+	m_node_examples.clear();
 
 	return true;
 }
@@ -180,7 +179,7 @@ unsigned int  DataLoader::generateKey(array<unsigned int, NODES_PER_EDGE>* indic
 	return (indices->at(0) * indices->at(0) + indices->at(1) * indices->at(1) + indices->at(2) * indices->at(2)) % UINT32_MAX;
 }
 
-DataLoader::DataLoader(const string& file_path) : m_max_coord(0), m_heat_conduction_coeff(DBL_MIN), m_node_examples(nullptr) {
+DataLoader::DataLoader(const string& file_path) : m_max_coord(0), m_heat_conduction_coeff(DBL_MIN) {
 	m_file.open(file_path);
 }
 
@@ -304,7 +303,7 @@ vector<unsigned int > DataLoader::getBoundaryNodes() const
 	return result;
 }
 
-void DataLoader::deletUselessData() {
+void DataLoader::deleteSomeDataBeforeSolve() {
 	m_elements.clear();
 	m_boundary_edges_hash_table.clear();
 	m_surfaces.clear();

@@ -23,7 +23,7 @@ private:
 	multimap<unsigned int, unsigned int > m_boundary_edges_hash_table;
 	vector<Edge> m_boundary_edges;
 	vector<Surface> m_surfaces;
-	map<unsigned int, array<unsigned int, COORDS_PER_NODE>>* m_node_examples;
+	map<unsigned int, array<unsigned int, COORDS_PER_NODE>> m_node_examples;
 	double m_heat_conduction_coeff;
 	double m_max_coord;
 
@@ -48,7 +48,7 @@ public:
 	unsigned int  getSurfaceCount() const;
 	double getMaxCoord() const;
 	vector<unsigned int > getBoundaryNodes() const;
-	void deletUselessData();
+	void deleteSomeDataBeforeSolve();
 
 public:
 	static unsigned int  generateKey(array<unsigned int, COORDS_PER_NODE>* indices);
