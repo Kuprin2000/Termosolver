@@ -42,7 +42,7 @@ class FrameDrawer {
 		// initialize camera matrices
 		this.time_step = frame_time;
 		this.look_matrix = mat4.create();
-		this.camera_position = vec3.fromValues(2.5, 2.5, 0.5);
+		this.camera_position = vec3.fromValues(1., 1., 0.5);
 		this.camera_rotation_left = mat3.create();
 		mat3.fromRotation(this.camera_rotation_left, -1 / this.time_step);
 		this.camera_rotation_right = mat3.create();

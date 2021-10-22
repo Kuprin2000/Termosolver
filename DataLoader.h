@@ -26,6 +26,7 @@ private:
 	map<unsigned int, array<unsigned int, COORDS_PER_NODE>> m_node_examples;
 	double m_heat_conduction_coeff;
 	double m_max_coord;
+	array<double, COORDS_PER_NODE> m_object_center;
 
 private:
 	void initHeatConduction();
@@ -47,8 +48,9 @@ public:
 	unsigned int  getElementCount() const;
 	unsigned int  getSurfaceCount() const;
 	double getMaxCoord() const;
-	vector<unsigned int > getBoundaryNodes() const;
+	vector<unsigned int> getBoundaryNodes() const;
 	void deleteSomeDataBeforeSolve();
+	const array<double, COORDS_PER_NODE> *getObjectCenter() const;
 
 public:
 	static unsigned int  generateKey(array<unsigned int, COORDS_PER_NODE>* indices);

@@ -23,9 +23,9 @@ void Exporter::generateJSFile(const string& file_path) const {
 	double temperature_delta = max_temperature - min_temperature;
 	double current_node_temperature;
 	double color_coeff;
-	double red_coeff;
-	double blue_coeff;
+	double red_coeff, green_coeff, blue_coeff;
 	const array<double, COORDS_PER_NODE>* current_node_coord;
+	const array <double, COORDS_PER_NODE>* object_center = m_data_loader->getObjectCenter();
 	vector <unsigned int > boundary_nodes;
 	ofstream js_file;
 	ifstream js_template_1;
@@ -48,14 +48,37 @@ void Exporter::generateJSFile(const string& file_path) const {
 		current_node_coord = m_data_loader->getNodeCoord(i);
 		current_node_temperature = m_solver->getTemperatureAtNode(i);
 		color_coeff = (current_node_temperature - min_temperature) / temperature_delta;
-		blue_coeff = 1 - color_coeff;
-		red_coeff = color_coeff;
 
-		js_file << "	coord[" << i * 3 << "] = " << current_node_coord->at(0) / max_coord << ";" << endl;
-		js_file << "	coord[" << i * 3 + 1 << "] = " << current_node_coord->at(1) / max_coord << ";" << endl;
-		js_file << "	coord[" << i * 3 + 2 << "] = " << current_node_coord->at(2) / max_coord << ";" << endl;
+		red_coeff = 0;
+		blue_coeff = 0;
+		green_coeff = 0;
+
+		if (color_coeff >= 0 && color_coeff <= 0.25) {
+			red_coeff = 0;
+			green_coeff = 4 * color_coeff;
+			blue_coeff = 1;
+		}
+		if (color_coeff > 0.25 && color_coeff <= 0.5) {
+			red_coeff = 0;
+			green_coeff = 1;
+			blue_coeff = 2 - 4 * color_coeff;
+		}
+		if (color_coeff > 0.5 && color_coeff <= 0.75) {
+			red_coeff = 4 * color_coeff - 2;
+			green_coeff = 1;
+			blue_coeff = 0;
+		}
+		if (color_coeff > 0.75 && color_coeff <= 1) {
+			red_coeff = 1;
+			green_coeff = 4 - 4 * color_coeff;
+			blue_coeff = 0;
+		}
+
+		js_file << "	coord[" << i * 3 << "] = " << (current_node_coord->at(0) - object_center->at(0)) / max_coord << ";" << endl;
+		js_file << "	coord[" << i * 3 + 1 << "] = " << (current_node_coord->at(1) - object_center->at(1)) / max_coord << ";" << endl;
+		js_file << "	coord[" << i * 3 + 2 << "] = " << (current_node_coord->at(2) - object_center->at(2)) / max_coord << ";" << endl;
 		js_file << "	color[" << i * 3 << "] = " << red_coeff << ";" << endl;
-		js_file << "	color[" << i * 3 + 1 << "] = " << 0 << ";" << endl;
+		js_file << "	color[" << i * 3 + 1 << "] = " << green_coeff << ";" << endl;
 		js_file << "	color[" << i * 3 + 2 << "] = " << blue_coeff << ";" << endl;
 		js_file << endl;
 	}

@@ -42,6 +42,7 @@ void DataLoader::initElements() {
 	unsigned int  number_of_elements;
 	string buffer_string;
 	array<unsigned int, NODES_PER_ELEMENT>  indices;
+	const array<double, COORDS_PER_NODE>* elem_center;
 
 	m_file >> buffer_string;
 	number_of_elements = atol(buffer_string.c_str());
@@ -58,7 +59,16 @@ void DataLoader::initElements() {
 		indices.at(3) = atol(buffer_string.c_str()) - 1;
 
 		m_elements.push_back(FiniteElement(i, &indices, &m_coords));
+
+		elem_center = m_elements.at(i).getCenter();
+		m_object_center.at(0) += elem_center->at(0);
+		m_object_center.at(1) += elem_center->at(1);
+		m_object_center.at(2) += elem_center->at(2);
 	}
+
+	m_object_center.at(0) /= number_of_elements;
+	m_object_center.at(1) /= number_of_elements;
+	m_object_center.at(2) /= number_of_elements;
 }
 
 void DataLoader::initEdges() {
@@ -180,6 +190,7 @@ unsigned int  DataLoader::generateKey(array<unsigned int, NODES_PER_EDGE>* indic
 }
 
 DataLoader::DataLoader(const string& file_path) : m_max_coord(0), m_heat_conduction_coeff(DBL_MIN) {
+	m_object_center.fill(0);
 	m_file.open(file_path);
 }
 
@@ -307,4 +318,8 @@ void DataLoader::deleteSomeDataBeforeSolve() {
 	m_elements.clear();
 	m_boundary_edges_hash_table.clear();
 	m_surfaces.clear();
+}
+
+const array<double, COORDS_PER_NODE>* DataLoader::getObjectCenter() const {
+	return &m_object_center;
 }

@@ -2,10 +2,10 @@
 #include <map>
 #include <cmath>
 #include <iostream>
-#include "./lib/eigen/Eigen/SparseCore"
-#include "./lib/eigen/Eigen/SparseLU"
-#include  "./lib/eigen/Eigen/Dense"
-#include  "./lib/eigen/Eigen/SparseCholesky"
+#include "./lib/eigen/SparseCore"
+#include "./lib/eigen/SparseLU"
+#include "./lib/eigen/Dense"
+#include "./lib/eigen/SparseCholesky"
 #include "FiniteElement.h"
 #include "Edge.h"
 #include "Surface.h"
